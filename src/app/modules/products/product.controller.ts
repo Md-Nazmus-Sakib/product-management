@@ -18,11 +18,42 @@ const createProduct = async (req: Request, res: Response) => {
 //get all product
 
 const getAllProduct = async (req: Request, res: Response) => {
+  const searchTerm = req.query.searchTerm as string;
+
   try {
-    const result = await ProductServices.getAllProductFromDB();
+    if (searchTerm === undefined) {
+      const result = await ProductServices.getAllProductFromDB();
+      res.status(200).json({
+        success: true,
+        message: 'Products fetched successfully!',
+        data: result,
+      });
+    } else if (searchTerm) {
+      const result = await ProductServices.searchItemFromDB(searchTerm);
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+        data: result,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//get single product by id
+const getSingleProductById = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const result = await ProductServices.getSingleProductFromDB(productId);
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message: 'Product fetched successfully!',
       data: result,
     });
   } catch (err) {
@@ -48,14 +79,16 @@ const updateProduct = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
-//get single product by id
-const getSingleProductById = async (req: Request, res: Response) => {
+
+//Delete product
+const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const result = await ProductServices.getSingleProductFromDB(productId);
+    let result = await ProductServices.deleteProductFromDB(productId);
+    result = null;
     res.status(200).json({
       success: true,
-      message: 'Product fetched successfully!',
+      message: 'Product deleted successfully!',
       data: result,
     });
   } catch (err) {
@@ -68,4 +101,5 @@ export const ProductControllers = {
   getAllProduct,
   getSingleProductById,
   updateProduct,
+  deleteProduct,
 };
