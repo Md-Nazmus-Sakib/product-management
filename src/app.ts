@@ -10,6 +10,13 @@ app.use(cors());
 app.use('/app/products', ProductRoutes);
 app.use('/app/orders', OrderRoutes);
 
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
 const getAController = (req: Request, res: Response) => {
   res.send('Hello World!');
 };
