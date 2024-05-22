@@ -7,6 +7,15 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
+const getAController = (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message:
+      'Welcome to the Product and Order API! Use /api/products or /api/orders to access resources.',
+  });
+};
+app.get('/', getAController);
+
 app.use('/api/products', ProductRoutes);
 app.use('/api/orders', OrderRoutes);
 
@@ -16,11 +25,5 @@ app.use((req: Request, res: Response) => {
     message: 'Route not found',
   });
 });
-
-const getAController = (req: Request, res: Response) => {
-  res.send('Hello World!');
-};
-
-app.get('/', getAController);
 
 export default app;
