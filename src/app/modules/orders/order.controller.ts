@@ -90,11 +90,12 @@ const createOrder = async (req: Request, res: Response) => {
     await product.save();
 
     // Save the order
-    await OrderServices.createOrderIntoDB(zodOrderValidation);
+    const result = await OrderServices.createOrderIntoDB(zodOrderValidation);
 
     res.status(201).json({
       success: true,
       message: 'Order created successfully!',
+      data: result,
     });
   } catch (err) {
     console.error(err);

@@ -43,6 +43,7 @@ const singleProductUpdateById = async (
 ) => {
   const result = await ProductModel.findByIdAndUpdate(productId, productData, {
     new: true,
+    runValidators: true,
   });
   return result;
 };

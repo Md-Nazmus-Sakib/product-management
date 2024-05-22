@@ -7,8 +7,8 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/app/products', ProductRoutes);
-app.use('/app/orders', OrderRoutes);
+app.use('/api/products', ProductRoutes);
+app.use('/api/orders', OrderRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
